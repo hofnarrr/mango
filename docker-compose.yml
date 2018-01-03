@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  #mongodb:
+  mango-backend:
+    build: backend/
+    ports: [ '5000:5000' ]
+    volumes: [ './backend/:/mango-backend' ]
+  mango-frontend:
+    build: frontend/
+    ports: [ '8080:3000' ]
+    volumes: [ './frontend/:/mango-frontend' ]
