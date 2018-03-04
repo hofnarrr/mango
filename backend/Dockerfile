@@ -1,10 +1,11 @@
 FROM python:3
-
-WORKDIR /mango-backend
-ADD . /mango-backend
-
-RUN pip install -r requirements.txt
-
 EXPOSE 5000
 
-CMD gunicorn -b 0.0.0.0:5000 --access-logfile - "mango.app:create_app()"
+RUN apt-get update && apt-get upgrade -y -qq
+COPY . /mango-backend
+
+WORKDIR /mango-backend
+RUN pip install -r requirements.txt
+RUN pip install --editable .
+
+CMD mangoctl run -h 0.0.0.0 -p 5000

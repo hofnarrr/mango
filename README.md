@@ -9,7 +9,22 @@ docker-compose up --build
 
 just the backend:
 ```bash
+cd backend/
 # create & activate venv
 pip install -r backend/requirements.txt
-MANGO_MODE=dev python backend/run.py
+pip install --editable .
+MANGO_MODE=dev mangoctl run
+```
+
+just the frontend:
+```bash
+cd frontend/
+yarn start
+# for tests
+yarn test
+```
+
+explore the cli
+```bash
+mangoctl --help
 ```
