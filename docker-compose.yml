@@ -1,12 +1,19 @@
 version: '3'
 
 services:
-  #mongodb:
   mango-backend:
     build: backend/
     ports: [ '5000:5000' ]
     volumes: [ './backend/:/mango-backend' ]
+    env_file: [ '.env' ]
   mango-frontend:
     build: frontend/
     ports: [ '8080:3000' ]
     volumes: [ './frontend/:/mango-frontend' ]
+  postgres:
+    image: 'postgres:10.2'
+    ports: [ '5432:5432' ]
+    volumes: [ 'postgres:/var/lib/postgresql/data' ]
+
+volumes:
+  postgres:
