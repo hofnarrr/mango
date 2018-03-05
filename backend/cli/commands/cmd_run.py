@@ -22,4 +22,4 @@ def cli(host='127.0.0.1', port=5000, debug=False, mode=None):
     """
 
     mango = app.create_app(mode=mode)
-    return mango.run(host=host, port=port, debug=debug)
+    return mango.run(host=host, port=port, debug=debug or mango.config['DEBUG'])

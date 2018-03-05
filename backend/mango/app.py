@@ -28,9 +28,11 @@ def create_app(mode=None):
 
     if app.config['DEBUG']:
         _list_routes(app)
+        _print_config(app)
 
     return app
 
+# TODO: refactor to separate module
 def _configure_app(app, mode):
     """
     configuration order of precedence:
@@ -49,26 +51,26 @@ def _configure_app(app, mode):
         'dev':  'DevelopmentConfig'
     }
 
-    # 1. load base defaults
+    # 4. load base defaults
     app.config.from_object('mango.config.defaults.Config')
     # DEBUG
     print('DEBUG: Loaded default configuration')
 
-    # 2. load default configuration based on 'mode'-parameter, if set
+    # 3. load default configuration based on 'mode'-parameter, if set
     try:
         if mode is not None:
             app.config.from_object('mango.config.defaults.'
                                    + config_map[mode])
             # DEBUG
-            print('DEBUG: \'mode\'-parameter set, loading ' + config_map[mode])
+            print('DEBUG: \'mode\'-parameter set, loaded ' + config_map[mode])
         else:
             # DEBUG:
             print('DEBUG: \'mode\'-parameter not set')
     except KeyError as e:
         # DEBUG
-        print('DEBUG: no such mode ' + mode + '. ', e)
+        print('DEBUG: no such mode \'' + mode + '\'.')
 
-    # try to load configuration based on MANGO_MODE envvar
+    # 2. try to load configuration based on MANGO_MODE envvar
     try:
         app.config.from_object('mango.config.defaults.'
                                + config_map[environ.get('MANGO_MODE')])
@@ -82,7 +84,7 @@ def _configure_app(app, mode):
         print('DEBUG: MANGO_MODE not set, not loading mode specific '
               + 'configuration')
 
-    # try to load from the file MANGO_SETTINGS envvar points to
+    # 1. try to load from the file MANGO_SETTINGS envvar points to
     try:
         app.config.from_envvar('MANGO_SETTINGS')
         # DEBUG
@@ -93,6 +95,7 @@ def _configure_app(app, mode):
         # DEBUG
         print('DEBUG: ', e)
 
+# TODO: refactor to separate modules under lib/
 # DEBUG!
 # tweaked from http://flask.pocoo.org/snippets/117/
 def _list_routes(app):
@@ -112,3 +115,9 @@ def _list_routes(app):
     print('### Routes ##################################################===--')
     for line in sorted(output):
         print(line)
+
+def _print_config(app):
+    print('App config:')
+    for key in app.config:
+        print('{} = {}'.format(key, app.config[key]))
+
