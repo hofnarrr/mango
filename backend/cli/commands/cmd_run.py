@@ -12,11 +12,14 @@ from mango import app
 @click.option('--debug/--no-debug',
               default=False,
               help='toggle app debug mode. default: False')
-def cli(host='127.0.0.1', port=5000, debug=False):
+@click.option('--mode', '-m',
+              default=None,
+              help='mango app mode. default: None')
+def cli(host='127.0.0.1', port=5000, debug=False, mode=None):
     """
     Launches flask builtin server.
 
     """
 
-    mango = app.create_app()
+    mango = app.create_app(mode=mode)
     return mango.run(host=host, port=port, debug=debug)

@@ -8,4 +8,4 @@ WORKDIR /mango-backend
 RUN pip install -r requirements.txt
 RUN pip install --editable .
 
-CMD mangoctl run -h 0.0.0.0 -p 5000
+CMD mangoctl run -h 0.0.0.0 -p 5000 -m dev
